@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+  <title>Profile</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/profile_style.css' %}">
+  <script type="text/javascript" src="{% static 'js/profile_script.js' %}"></script>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.css"></link>
+{% endblock meta %}
+
+{% block content %}
+<div class="content d-flex flex-row" style="width: 100%;">
+
+  <!-- Sidebar -->
+  <div class="d-flex flex-column flex-shrink-0 p-3 bg-green" style="width: 300px; height: 150vh;">
+
+    <a class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+      <h3 class="name-header" id="id-name-header">{{user}}</h3>
+    </a>
+    <hr>
+
+    {% if user.userprofile.organization %}
+      <div class="nav flex-column nav-pills nav-fill me-3" id="pills-tab" role="tablist" aria-orientation="vertical">
+        <button class="nav-link active" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="true">Data Profil</button>
+        <button class="nav-link" id="pills-donation-tab" data-bs-toggle="pill" data-bs-target="#pills-donation" type="button" role="tab" aria-controls="pills-donation" aria-selected="false">Donasi yang Dibuka</button>
+        <button class="nav-link" id="pills-carbon-tab" data-bs-toggle="pill" data-bs-target="#pills-carbon" type="button" role="tab" aria-controls="pills-carbon" aria-selected="false">Produksi Karbon</button>
+      </div>
+    {% else %}
+      <div class="nav flex-column nav-pills nav-fill me-3" id="pills-tab" role="tablist" aria-orientation="vertical">
+        <button class="nav-link active" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="true">Data Profil</button>
+        <button class="nav-link" id="pills-history-tab" data-bs-toggle="pill" data-bs-target="#pills-history" type="button" role="tab" aria-controls="pills-history" aria-selected="false">Histori Donasi</button>
+        <button class="nav-link" id="pills-carbon-tab" data-bs-toggle="pill" data-bs-target="#pills-carbon" type="button" role="tab" aria-controls="pills-carbon" aria-selected="false">Produksi Karbon</button>
+      </div>
+    {% endif %}
+
+
+  </div>
+  <!-- End sidebar -->
+
+  <!-- Sidebar Content -->
+  <div style="background-color: white; width: 100%;">
+    <div class="tab-content" id="pills-tabContent">
+      {% if user.userprofile.organization %}
+      <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">a</div>
+      <div class="tab-pane fade" id="pills-donation" role="tabpanel" aria-labelledby="pills-donation-tab" tabindex="1">b</div>
+      <div class="tab-pane fade" id="pills-carbon" role="tabpanel" aria-labelledby="pills-carbon-tab" tabindex="2">c</div>
+      {% else %}
+
+      <!-- Tab content profile -->
+      <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+        <div class="profile-tab-content" style="padding: 30px;">
+
+          <div class="username-box">
+            <p class="username-title green-jk">Username :</p>
+            <h3 id="username-content" class="username-text darkgreen-jk">{{user}}</h3>
+            <!-- Edit username button -->
+            <button id="edit-username-button" type="button" class="btn btn-primary" onclick="edit_username_button()">Edit Username</button>
+            <!-- End edit username button -->
+          </div>
+          <!-- Edit username div -->
+          <div id="edit-username-div" style="display:none">
+            <div class="edit-username-content">
+              <div class="edit-username-header">
+                <button type="button" class="btn-close" aria-label="Close" onclick="close_edit_username()"></button>
+              </div>
+              <div class="edit-username-body">
+                <form action="" method="POST">
+                  {% csrf_token %}
+                    <label for="username" class="form-label">Username baru</label>
+                    <input type="text" class="form-control" id="id-username" name="username" placeholder="Username baru">
+                  <button id="submit-username-button" class="btn btn-primary" type="button">Submit</button>
+                </form>
+              </div>
+            </div>
+          </div>
+          <!-- End edit username div -->
+          <p class="tes-aja" id="id-tes-aja">tes aja</p>
+
+          <!-- Contact div -->
+          <div class="contact-box">
+            <p class="contact-title green-jk">Contact :</p>
+            <h3 id="contact-content" class="contact-text darkgreen-jk">{{user.userprofile.contact}}</h3>
+            <!-- Edit contact button -->
+            <button id="edit-contact-button" type="button" class="btn btn-primary" onclick="edit_contact_button()">Edit Contact</button>
+            <!-- End edit contact button -->
+          </div>
+          <!-- End contact div -->
+
+          <!-- Email div -->
+          <div class="email-box">
+            <p class="email-title green-jk">Email :</p>
+            <h3 id="email-content" class="email-text darkgreen-jk">{{user.email}}</h3>
+            <!-- Edit email button -->
+            <button id="edit-email-button" type="button" class="btn btn-primary" onclick="edit_email_button()">Edit Email</button>
+            <!-- End edit email button -->
+          <!-- End email div -->
+
+
+        </div>
+      </div>
+      <!-- End tab content profile -->
+
+      <!-- Tab content donation history -->
+      <div class="tab-pane fade" id="pills-history" role="tabpanel" aria-labelledby="pills-history-tab" tabindex="1">
+        <div class="donation-history-tab-content" style="padding: 30px;">
+          <div class="donation-history-box">
+            <p class="donation-history-title green-jk">Histori Donasi :</p>
+            <div class="donation-history-content">
+              <div class="donation-history-content-box">
+                <div class="donation-history-content-box-header">
+                  <p class="donation-history-content-box-header-title">Donasi 1</p>
+                </div>
+                <div class="donation-history-content-box-body">
+                  <p class="donation-history-content-box-body-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc sit amet aliquet lacinia, nunc nisl aliquet nisl, eget aliquet nisl nisl sit amet nisl. Sed euismod, nunc sit amet aliquet lacinia, nunc nisl aliquet nisl, eget aliquet nisl nisl sit amet nisl.</p>
+                </div>
+              </div>
+              <div class="donation-history-content-box">
+                <div class="donation-history-content-box-header">
+                  <p class="donation-history-content-box-header-title">Donasi 2</p>
+                </div>
+                <div class="donation-history-content-box-body">
+                  <p class="donation-history-content-box-body-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc sit amet aliquet lacinia, nunc nisl aliquet nisl, eget aliquet nisl nisl sit amet nisl. Sed euismod, nunc sit amet aliquet lacinia, nunc nisl aliquet nisl, eget aliquet nisl nisl sit amet nisl.</p>
+                </div>
+              </div>
+              <div class="donation-history-content-box">
+                <div class="donation-history-content-box-header">
+                  <p class="donation-history-content-box-header-title">Donasi 3</p>
+                </div>
+                <div class="donation-history-content-box-body">
+                  <p class="donation-history-content-box-body-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc sit amet aliquet lacinia, nunc nisl aliquet nisl, eget aliquet nisl n
+      </div>
+      <!-- End tab content donation history -->
+
+      <!-- Tab content carbon history -->
+      <div class="tab-pane fade" id="pills-carbon" role="tabpanel" aria-labelledby="pills-carbon-tab" tabindex="2">f</div>
+      <!-- End tab content carbon history -->
+      {% endif %}
+    </div>
+  </div>
+  <!-- End sidebar content -->
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+{% endblock content %}
